@@ -1,12 +1,10 @@
 import java.awt.Color;
 import javax.swing.*;
+import javax.swing.border.Border;
 import javax.swing.event.*;
 import java.awt.event.*;
 import java.util.ArrayList;
-
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JTextField;
+import java.awt.*;
 
 public class Program implements ActionListener 
 {
@@ -16,20 +14,7 @@ public class Program implements ActionListener
     public static void main(String[] args) {
         // List of students
         ArrayList<Student> students = new ArrayList<Student>();
-        String allData = Importer.reader("file.txt");
-        String[] splitUpByLines = allData.split("[, \n]");
-        int j = 0;
-        for (int i = 0; i < splitUpByLines.length/6; i++) {
-            Student student = new Student();
-            ++j;
-            student.setFullname(splitUpByLines[j++]);
-            student.setMobile(splitUpByLines[j++]);
-            student.setAddress(splitUpByLines[j++]);
-            student.setDepartment(splitUpByLines[j++]);
-            student.setStage(Integer.parseInt(splitUpByLines[j++]));
-            students.add(student);
-        }
-        
+        Student.loadData(students);
 
         // Creating window
         JFrame window = new JFrame("Student Management System");
@@ -58,7 +43,7 @@ public class Program implements ActionListener
         window.add(search_bar);
 
         // Stroing student Informations
-        JButton button2 = new JButton("Store new Informations");
+        JButton button2 = new JButton("Register new student");
         button2.addActionListener(
             new ActionListener()
             {
@@ -86,12 +71,77 @@ public class Program implements ActionListener
         button2.setBackground(Color.white);
         window.add(button2);
 
+        // List all students.
         JButton button3 = new JButton("Show Informations");
         button3.setBounds(window.getWidth()/2 - (180/2), window.getHeight()/2 + 20, 180, 30);
         button3.setBackground(Color.WHITE);
 
         window.add(button3);
+        ArrayList<JButton> editBtns = new ArrayList<JButton>();
+        ArrayList<JButton> deleteBtns = new ArrayList<JButton>();
         button3.addActionListener(
+            new ActionListener()
+            {
+                public void actionPerformed(ActionEvent e) {
+                    String data = "<html>";
+                    data += "<h4 bgcolor=\"#0275d8\" style=\"color:white;\" >" + "ID\tFullname\tAddress\tMobile\tDepartment\tStage  <hr>" + "</h4>";
+                    for (Student student: students) 
+                    {
+                        data += "<p style=\"background-color:#f0ad4e;\" >";
+                        data += student.htmlFormatted() + "<hr>";
+                        editBtns.add(new JButton("Edit"));
+                        deleteBtns.add(new JButton("Delete"));
+                        data += "</p>";
+                    }
+                    
+                    data += "</html>";
+                    if(!data.equals("")){
+                        //JOptionPane.showMessageDialog(window, data, "List of student", JOptionPane.PLAIN_MESSAGE);
+                        JFrame newWindow = new JFrame();
+                        newWindow.setLayout(new BorderLayout());
+                        JLabel text = new JLabel("Student Lists");
+                        text.setText(data);
+                        JPanel btnList = new JPanel();
+                        GridBagConstraints cg = new GridBagConstraints();                        
+                        btnList.setLayout(new GridBagLayout());
+                        
+
+                        for (int i = 0; i < editBtns.size(); i++)
+                        {
+                            cg.gridy++;
+                            if(i == 0) {
+                                btnList.add(new JLabel("<html><p style=\"background-color:#5bc0de;\">Edits</p><hr></html>"),cg);
+                                btnList.add(new JLabel("<html><p style=\"background-color:#5bc0de;\">Deletes</p><hr></html>"),cg);
+                                cg.gridy++;
+                            };
+                            editBtns.get(i).setBackground(new Color(92, 184, 92));
+                            deleteBtns.get(i).setBackground(new Color(217, 83, 79));
+
+                            btnList.add(editBtns.get(i),cg);
+                            btnList.add(deleteBtns.get(i),cg);
+                        }
+                        
+                        newWindow.add(text, BorderLayout.CENTER);
+                        newWindow.setLayout(new GridBagLayout());
+                        newWindow.add(btnList);
+                        editBtns.clear();
+                        deleteBtns.clear();
+                        newWindow.setSize(600,400);
+                        newWindow.setVisible(true);
+                    }else{
+                       JOptionPane.showMessageDialog(window, "List is empty!", "No Lists", JOptionPane.WARNING_MESSAGE);
+                    }
+                }
+            }
+        );
+
+        // List students in each department.
+        JButton button4 = new JButton("List students in each department");
+        button4.setBounds(window.getWidth()/2 - (220/2), window.getHeight()/2 + 55, 220, 30);
+        button4.setBackground(Color.WHITE);
+
+        window.add(button4);
+        button4.addActionListener(
             new ActionListener()
             {
                 public void actionPerformed(ActionEvent e) {

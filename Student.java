@@ -1,3 +1,6 @@
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
 public class Student {
     private int id;
     private String fullname;
@@ -61,8 +64,28 @@ public class Student {
         this.stage = stage;
     }
 
+    public static void loadData(ArrayList<Student> students)
+    {
+        String allData = Importer.reader("file.txt");
+        String[] splitUpByLines = allData.split("[, \n]");
+        int j = 0;
+        for (int i = 0; i < splitUpByLines.length/6; i++) {
+            Student student = new Student();
+            ++j;
+            student.setFullname(splitUpByLines[j++]);
+            student.setMobile(splitUpByLines[j++]);
+            student.setAddress(splitUpByLines[j++]);
+            student.setDepartment(splitUpByLines[j++]);
+            student.setStage(Integer.parseInt(splitUpByLines[j++]));
+            students.add(student);
+        }
+    }
+
     @Override
     public String toString(){
         return getID() + "," + getFullname() + "," + getAddress() + "," + getMobile() +"," +getDepartment() + "," + getStage();
+    }
+    public String htmlFormatted(){
+        return getID() + "&nbsp;" + getFullname() + "&nbsp;" + getAddress() + "&nbsp;" + getMobile() +"&nbsp;" +getDepartment() + "&nbsp;" + getStage();
     }
 }
