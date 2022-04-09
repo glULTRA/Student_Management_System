@@ -1,0 +1,68 @@
+public class Student {
+    private int id;
+    private String fullname;
+    private String mobile;
+    private String address;
+    private String department;
+    private int stage;
+    
+    public Student(){
+        autoIdProvider();
+    }
+    public Student(String fullname, String mobile, String address, String department, int stage){
+        autoIdProvider();
+        setMobile(mobile);
+        setStage(stage);
+        setDepartment(department);
+        setAddress(address);
+        setFullname(fullname);
+    }
+    private void autoIdProvider(){
+        try {
+            this.id = Integer.parseInt(Importer.reader("IDs.txt"));
+            Importer.clearFile("IDs.txt");
+            Importer.importData("IDs.txt", Integer.toString(++this.id));
+        } catch (Exception e) {
+            Importer.importData("IDs.txt", "0");
+        }
+        
+    }
+    public int getID(){
+        return id;
+    }
+    public String getFullname() {
+        return fullname;
+    }
+    public void setFullname(String fullname) {
+        this.fullname = fullname;
+    }
+    public String getMobile() {
+        return mobile;
+    }
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
+    }
+    public String getAddress() {
+        return address;
+    }
+    public void setAddress(String address) {
+        this.address = address;
+    }
+    public String getDepartment() {
+        return department;
+    }
+    public void setDepartment(String department) {
+        this.department = department;
+    }
+    public int getStage() {
+        return stage;
+    }
+    public void setStage(int stage) {
+        this.stage = stage;
+    }
+
+    @Override
+    public String toString(){
+        return getID() + "," + getFullname() + "," + getAddress() + "," + getMobile() +"," +getDepartment() + "," + getStage();
+    }
+}
