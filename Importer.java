@@ -42,10 +42,21 @@ public class Importer
         }
     }
 
-    public static void replaceData(String path, String newData)
+    public static boolean isEmpty(String path)
     {
-        clearFile(path);
-        importData(path, newData);
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader(path));
+            if (reader.readLine() == null) {
+                return true;
+            }
+            else{
+                return false;
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "File is empty!");
+            Importer.importData(path, null);
+            return true;
+        }
     }
     
     public static String reader(String path){

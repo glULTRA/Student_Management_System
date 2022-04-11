@@ -1,6 +1,8 @@
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
+import javax.swing.JOptionPane;
+
 public class Student {
     private int id;
     private String fullname;
@@ -20,7 +22,8 @@ public class Student {
         setAddress(address);
         setFullname(fullname);
     }
-    private void autoIdProvider(){
+    private void autoIdProvider()
+    {
         try {
             this.id = Integer.parseInt(Importer.reader("IDs.txt"));
             Importer.clearFile("IDs.txt");
@@ -66,18 +69,22 @@ public class Student {
 
     public static void loadData(ArrayList<Student> students)
     {
-        String allData = Importer.reader("file.txt");
-        String[] splitUpByLines = allData.split("[, \n]");
-        int j = 0;
-        for (int i = 0; i < splitUpByLines.length/6; i++) {
-            Student student = new Student();
-            ++j;
-            student.setFullname(splitUpByLines[j++]);
-            student.setMobile(splitUpByLines[j++]);
-            student.setAddress(splitUpByLines[j++]);
-            student.setDepartment(splitUpByLines[j++]);
-            student.setStage(Integer.parseInt(splitUpByLines[j++]));
-            students.add(student);
+        try {
+            String allData = Importer.reader("file.txt");
+            String[] splitUpByLines = allData.split("[, \n]");
+            int j = 0;
+            for (int i = 0; i < splitUpByLines.length/6; i++) {
+                Student student = new Student();
+                ++j;
+                student.setFullname(splitUpByLines[j++]);
+                student.setMobile(splitUpByLines[j++]);
+                student.setAddress(splitUpByLines[j++]);
+                student.setDepartment(splitUpByLines[j++]);
+                student.setStage(Integer.parseInt(splitUpByLines[j++]));
+                students.add(student);
+            }
+        } catch (Exception e) {
+            //TODO: handle exception
         }
     }
 

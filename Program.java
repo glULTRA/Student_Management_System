@@ -10,18 +10,19 @@ public class Program implements ActionListener
 {
     private static final int SCR_WIDTH = 612;
     private static final int  SCR_HEIGHT = 612;
+    
+    static JFrame window = new JFrame("Student Management System");
 
+    static ArrayList<Student> students = new ArrayList<Student>();
     static ArrayList<JButton> editBtns   = new ArrayList<JButton>();
     static ArrayList<JButton> deleteBtns = new ArrayList<JButton>();
     static ArrayList<JButton> detailBtns = new ArrayList<JButton>();
 
     public static void main(String[] args) {
         // List of students
-        ArrayList<Student> students = new ArrayList<Student>();
         Student.loadData(students);
 
         // Creating window
-        JFrame window = new JFrame("Student Management System");
         window.setLayout(null);
         window.setSize(SCR_WIDTH,SCR_HEIGHT);
         window.setResizable(false);
@@ -48,29 +49,7 @@ public class Program implements ActionListener
 
         // Stroing student Informations
         JButton button2 = new JButton("Register new student");
-        button2.addActionListener(
-            new ActionListener()
-            {
-                public void actionPerformed(ActionEvent e) {
-                    JOptionPane.showMessageDialog(window, "Hey Welcome To student management system!", "Data Entering", JOptionPane.PLAIN_MESSAGE);
-                    Student student = new Student();
-                    student.setFullname(JOptionPane.showInputDialog(window, "Enter fullname :"));
-                    student.setAddress(JOptionPane.showInputDialog(window, "Enter Address :"));
-                    student.setMobile(JOptionPane.showInputDialog(window, "Enter Mobile :"));
-                    student.setDepartment(JOptionPane.showInputDialog(window, "Enter Department :"));
-                    for (int i = 0; i < 1; i++) {
-                        try {
-                            student.setStage(Integer.parseInt(JOptionPane.showInputDialog(window, "Enter Stage :")));
-                        } catch (Exception e2) {
-                            --i;
-                            JOptionPane.showMessageDialog(window, "Please enter number !", "Stage Error !", JOptionPane.ERROR_MESSAGE);
-                        }
-                    }
-                    students.add(student);
-                    Importer.importData("file.txt", "\n" + student.toString());
-                }
-            }
-        );
+        button2.addActionListener(new Program());
         button2.setBounds(window.getWidth()/2 - (180/2), window.getHeight()/2 -(30/2), 180, 30);
         button2.setBackground(Color.white);
         window.add(button2);
@@ -100,7 +79,7 @@ public class Program implements ActionListener
                     }
                     
                     data += "</html>";
-                    if(!data.equals("")){
+                    if(!Importer.isEmpty("file.txt")){
                         //JOptionPane.showMessageDialog(window, data, "List of student", JOptionPane.PLAIN_MESSAGE);
                         JFrame newWindow = new JFrame();
                         newWindow.setLayout(new BorderLayout());
@@ -130,7 +109,7 @@ public class Program implements ActionListener
                             btnList.add(deleteBtns.get(i),cg);
                             btnList.add(detailBtns.get(i),cg);
                         }
-                        
+
                         for(int j = 0; j < deleteBtns.size(); j++)
                         {
                             int id = j;
@@ -140,6 +119,7 @@ public class Program implements ActionListener
                                 {
                                     public void actionPerformed(ActionEvent e) 
                                     {
+
                                         int makeSure = JOptionPane.showConfirmDialog(newWindow, "Do u really want to delete item " + (id+1) + " ?", "Deletting!", JOptionPane.YES_NO_OPTION);
                                         if(makeSure == 0)
                                         {
@@ -148,6 +128,10 @@ public class Program implements ActionListener
                                             for (Student student2 : students) {
                                                 Importer.importData("file.txt", student2.toString() + "\n");
                                             }
+                                            editBtns.clear();
+                                            deleteBtns.clear();
+                                            detailBtns.clear();
+                                            newWindow.dispose();
                                         }
                                     }
                                 }
@@ -163,6 +147,14 @@ public class Program implements ActionListener
                                 }
                                 
                             );
+
+                            editBtns.get(j).addActionListener(
+                                new ActionListener(){
+                                    public void actionPerformed(ActionEvent e){
+                                        
+                                    }   
+                                }
+                            );
                         }
 
                         newWindow.add(text, BorderLayout.CENTER);
@@ -170,8 +162,10 @@ public class Program implements ActionListener
                         newWindow.add(btnList);
                         editBtns.clear();
                         deleteBtns.clear();
+                        detailBtns.clear();
                         newWindow.setSize(600,400);
                         newWindow.setVisible(true);
+
                     }else{
                        JOptionPane.showMessageDialog(window, "List is empty!", "No Lists", JOptionPane.WARNING_MESSAGE);
                     }
@@ -215,12 +209,26 @@ public class Program implements ActionListener
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        // TODO Auto-generated method stub
-        for (int j = 0; j < deleteBtns.size(); j++) {
-            if(deleteBtns.get(j).isSelected()){
-                deleteBtns.remove(j);
-                JOptionPane.showMessageDialog(null, j);
+        JOptionPane.showMessageDialog(window, "Hey Welcome To student management system!", "Data Entering", JOptionPane.PLAIN_MESSAGE);
+        Student student = new Student();
+        student.setFullname(JOptionPane.showInputDialog(window, "Enter fullname :"));
+        student.setAddress(JOptionPane.showInputDialog(window, "Enter Address :"));
+        student.setMobile(JOptionPane.showInputDialog(window, "Enter Mobile :"));
+        student.setDepartment(JOptionPane.showInputDialog(window, "Enter Department :"));
+        for (int i = 0; i < 1; i++) {
+            try {
+                student.setStage(Integer.parseInt(JOptionPane.showInputDialog(window, "Enter Stage :")));
+            } catch (Exception e2) {
+                --i;
+                JOptionPane.showMessageDialog(window, "Please enter number !", "Stage Error !", JOptionPane.ERROR_MESSAGE);
             }
+        }
+        students.add(student);
+        if (Importer.isEmpty("file.txt")) {
+            Importer.importData("file.txt", student.toString());
+        }
+        else{
+            Importer.importData("file.txt", "\n" + student.toString());
         }
     }
 }
