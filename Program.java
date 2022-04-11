@@ -21,10 +21,11 @@ public class Program implements ActionListener
     public static void main(String[] args) {
         // List of students
         Student.loadData(students);
-
+        
         // Creating window
         window.setLayout(null);
         window.setSize(SCR_WIDTH,SCR_HEIGHT);
+        window.setBounds(400,160, window.getWidth(), window.getHeight());
         window.setResizable(false);
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -120,8 +121,8 @@ public class Program implements ActionListener
                                     public void actionPerformed(ActionEvent e) 
                                     {
 
-                                        int makeSure = JOptionPane.showConfirmDialog(newWindow, "Do u really want to delete item " + (id+1) + " ?", "Deletting!", JOptionPane.YES_NO_OPTION);
-                                        if(makeSure == 0)
+                                        
+                                        if(JOptionPane.showConfirmDialog(newWindow, "Do u really want to delete item " + (id+1) + " ?", "Deletting!", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION)
                                         {
                                             students.remove(id);
                                             Importer.clearFile("file.txt");
@@ -151,7 +152,83 @@ public class Program implements ActionListener
                             editBtns.get(j).addActionListener(
                                 new ActionListener(){
                                     public void actionPerformed(ActionEvent e){
-                                        
+                                        if(JOptionPane.showConfirmDialog(newWindow, "<----------------Student data---------->\n" + students.get(id) + "\nDo u want to edit its data ?", "Edit", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION)
+                                        {
+                                            Student editedStudent = new Student();
+                                            
+                                            String option;
+                                            for (int i = 0; i < 1; i++) {
+                                                option = JOptionPane.showInputDialog(newWindow, "Current Fullname :" + students.get(id).getFullname() + "\nNew Fullname :","Edit", JOptionPane.OK_CANCEL_OPTION);
+                                                editedStudent.setFullname((option != null)  ? option : students.get(id).getFullname());
+                                                try {
+                                                    if(option.equals("")){
+                                                        --i;
+                                                        JOptionPane.showMessageDialog(newWindow, "Enter some data !", "Empty !", JOptionPane.ERROR_MESSAGE);
+                                                    }
+                                                } catch (Exception e2) {
+                                                    
+                                                }
+                                            }
+                                            
+                                            for (int i = 0; i < 1; i++) {
+                                                option = JOptionPane.showInputDialog(newWindow, "Current Address :" + students.get(id).getAddress() + "\nNew Address :","Edit", JOptionPane.OK_CANCEL_OPTION);
+                                                editedStudent.setAddress((option != null)  ? option : students.get(id).getAddress());
+                                                try {
+                                                    if(option.equals("")){
+                                                        --i;
+                                                        JOptionPane.showMessageDialog(newWindow, "Enter some data !", "Empty !", JOptionPane.ERROR_MESSAGE);
+                                                    }
+                                                } catch (Exception e2) {
+                                                }
+                                            }
+                                            
+                                            for (int i = 0; i < 1; i++) {
+                                                option = JOptionPane.showInputDialog(newWindow, "Current Mobile Number :" + students.get(id).getMobile() + "\nNew Mobile Number :","Edit", JOptionPane.OK_CANCEL_OPTION);
+                                                editedStudent.setMobile((option != null)  ? option : students.get(id).getMobile());
+                                                try {
+                                                    if(option.equals("")){
+                                                        --i;
+                                                        JOptionPane.showMessageDialog(newWindow, "Enter some data !", "Empty !", JOptionPane.ERROR_MESSAGE);
+                                                    }
+                                                } catch (Exception e2) {
+                                                }
+                                            }
+
+
+                                            for (int i = 0; i < 1; i++) {
+                                                option = JOptionPane.showInputDialog(newWindow, "Current Department :" + students.get(id).getDepartment() + "\nNew Department :","Edit", JOptionPane.OK_CANCEL_OPTION);
+                                                editedStudent.setDepartment((option != null)  ? option : students.get(id).getDepartment());
+                                                try {
+                                                    if(option.equals("")){
+                                                        --i;
+                                                        JOptionPane.showMessageDialog(newWindow, "Enter some data !", "Empty !", JOptionPane.ERROR_MESSAGE);
+                                                    }
+                                                } 
+                                                catch (Exception e2) {
+                                                }
+                                            }
+                                            
+                                            for (int i = 0;i < 1; i++) {
+                                                int opt;
+                                                String optStr;
+                                                optStr = JOptionPane.showInputDialog(newWindow, "Current Stage :" + students.get(id).getStage() + "\nNew Stage :", "Edit", JOptionPane.OK_CANCEL_OPTION);
+                                                if(optStr == null){
+                                                    break;
+                                                }
+                                                try {
+                                                    opt = Integer.parseInt(optStr);
+                                                    editedStudent.setStage((opt != 0)  ? opt : students.get(id).getStage());
+                                                } 
+                                                catch (Exception e2) {
+                                                    --i;
+                                                    JOptionPane.showMessageDialog(newWindow, "Please enter number only!", "Error", JOptionPane.ERROR_MESSAGE);
+                                                }
+                                            }
+
+                                            students.set(id, editedStudent);
+                                            Student.pushData("file.txt", students);
+                                            newWindow.dispose();
+                                        }
                                     }   
                                 }
                             );
@@ -164,6 +241,7 @@ public class Program implements ActionListener
                         deleteBtns.clear();
                         detailBtns.clear();
                         newWindow.setSize(600,400);
+                        newWindow.setBounds(400,160, newWindow.getWidth(), newWindow.getHeight());
                         newWindow.setVisible(true);
 
                     }else{

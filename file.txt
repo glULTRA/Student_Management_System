@@ -1,3 +1,1 @@
-1,Dihan,7504151617,Erbil,ISE,2
-2,ULTRA,7517303465,Erbil,ISE,2
-3,Parez,a,a,a,2
+2,Dihan,7504151617,Erbil,ISE,2

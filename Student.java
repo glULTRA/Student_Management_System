@@ -67,6 +67,13 @@ public class Student {
         this.stage = stage;
     }
 
+    public static void pushData(String path, ArrayList<Student> students){
+        Importer.clearFile(path);
+        for (Student student : students) {
+            Importer.importData(path, student.toString() + "\n");
+        }
+    }
+
     public static void loadData(ArrayList<Student> students)
     {
         try {
