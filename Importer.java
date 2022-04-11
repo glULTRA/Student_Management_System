@@ -41,6 +41,12 @@ public class Importer
             }
         }
     }
+
+    public static void replaceData(String path, String newData)
+    {
+        clearFile(path);
+        importData(path, newData);
+    }
     
     public static String reader(String path){
         String data = "";

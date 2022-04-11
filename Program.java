@@ -11,6 +11,10 @@ public class Program implements ActionListener
     private static final int SCR_WIDTH = 612;
     private static final int  SCR_HEIGHT = 612;
 
+    static ArrayList<JButton> editBtns   = new ArrayList<JButton>();
+    static ArrayList<JButton> deleteBtns = new ArrayList<JButton>();
+    static ArrayList<JButton> detailBtns = new ArrayList<JButton>();
+
     public static void main(String[] args) {
         // List of students
         ArrayList<Student> students = new ArrayList<Student>();
@@ -77,12 +81,12 @@ public class Program implements ActionListener
         button3.setBackground(Color.WHITE);
 
         window.add(button3);
-        ArrayList<JButton> editBtns = new ArrayList<JButton>();
-        ArrayList<JButton> deleteBtns = new ArrayList<JButton>();
+        
         button3.addActionListener(
             new ActionListener()
             {
-                public void actionPerformed(ActionEvent e) {
+                public void actionPerformed(ActionEvent e) 
+                {
                     String data = "<html>";
                     data += "<h4 bgcolor=\"#0275d8\" style=\"color:white;\" >" + "ID\tFullname\tAddress\tMobile\tDepartment\tStage  <hr>" + "</h4>";
                     for (Student student: students) 
@@ -91,6 +95,7 @@ public class Program implements ActionListener
                         data += student.htmlFormatted() + "<hr>";
                         editBtns.add(new JButton("Edit"));
                         deleteBtns.add(new JButton("Delete"));
+                        detailBtns.add(new JButton("Detail"));
                         data += "</p>";
                     }
                     
@@ -104,23 +109,62 @@ public class Program implements ActionListener
                         JPanel btnList = new JPanel();
                         GridBagConstraints cg = new GridBagConstraints();                        
                         btnList.setLayout(new GridBagLayout());
-                        
 
+                        
                         for (int i = 0; i < editBtns.size(); i++)
                         {
                             cg.gridy++;
                             if(i == 0) {
                                 btnList.add(new JLabel("<html><p style=\"background-color:#5bc0de;\">Edits</p><hr></html>"),cg);
                                 btnList.add(new JLabel("<html><p style=\"background-color:#5bc0de;\">Deletes</p><hr></html>"),cg);
+                                btnList.add(new JLabel("<html><p style=\"background-color:#5bc0de;\">Details</p><hr></html>"),cg);
                                 cg.gridy++;
                             };
                             editBtns.get(i).setBackground(new Color(92, 184, 92));
                             deleteBtns.get(i).setBackground(new Color(217, 83, 79));
+                            detailBtns.get(i).setBackground(new Color(91, 192, 222));
+
+                            
 
                             btnList.add(editBtns.get(i),cg);
                             btnList.add(deleteBtns.get(i),cg);
+                            btnList.add(detailBtns.get(i),cg);
                         }
                         
+                        for(int j = 0; j < deleteBtns.size(); j++)
+                        {
+                            int id = j;
+                            deleteBtns.get(j).addActionListener
+                            (
+                                new ActionListener()
+                                {
+                                    public void actionPerformed(ActionEvent e) 
+                                    {
+                                        int makeSure = JOptionPane.showConfirmDialog(newWindow, "Do u really want to delete item " + (id+1) + " ?", "Deletting!", JOptionPane.YES_NO_OPTION);
+                                        if(makeSure == 0)
+                                        {
+                                            students.remove(id);
+                                            Importer.clearFile("file.txt");
+                                            for (Student student2 : students) {
+                                                Importer.importData("file.txt", student2.toString() + "\n");
+                                            }
+                                        }
+                                    }
+                                }
+                            );
+                            detailBtns.get(j).addActionListener
+                            (
+                                new ActionListener()
+                                {
+                                    public void actionPerformed(ActionEvent e) 
+                                    {
+                                        JOptionPane.showMessageDialog(newWindow,students.get(id));
+                                    }
+                                }
+                                
+                            );
+                        }
+
                         newWindow.add(text, BorderLayout.CENTER);
                         newWindow.setLayout(new GridBagLayout());
                         newWindow.add(btnList);
@@ -135,13 +179,16 @@ public class Program implements ActionListener
             }
         );
 
+        
+
         // List students in each department.
         JButton button4 = new JButton("List students in each department");
         button4.setBounds(window.getWidth()/2 - (220/2), window.getHeight()/2 + 55, 220, 30);
         button4.setBackground(Color.WHITE);
 
         window.add(button4);
-        button4.addActionListener(
+        button4.addActionListener
+        (
             new ActionListener()
             {
                 public void actionPerformed(ActionEvent e) {
@@ -169,6 +216,11 @@ public class Program implements ActionListener
     @Override
     public void actionPerformed(ActionEvent e) {
         // TODO Auto-generated method stub
-        
+        for (int j = 0; j < deleteBtns.size(); j++) {
+            if(deleteBtns.get(j).isSelected()){
+                deleteBtns.remove(j);
+                JOptionPane.showMessageDialog(null, j);
+            }
+        }
     }
 }
