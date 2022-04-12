@@ -14,9 +14,11 @@ public class Program implements ActionListener
     static JFrame window = new JFrame("Student Management System");
 
     static ArrayList<Student> students = new ArrayList<Student>();
+    static ArrayList<JButton> courseBtns = new ArrayList<JButton>();
     static ArrayList<JButton> editBtns   = new ArrayList<JButton>();
     static ArrayList<JButton> deleteBtns = new ArrayList<JButton>();
     static ArrayList<JButton> detailBtns = new ArrayList<JButton>();
+    
 
     public static void main(String[] args) {
         // List of students
@@ -45,7 +47,64 @@ public class Program implements ActionListener
         search_bar.setBounds(window.getWidth() - 400, 10, 290,50);
         search_bar.setAlignmentX(JTextField.CENTER_ALIGNMENT);
         search_bar.setAlignmentY(JTextField.CENTER_ALIGNMENT);
-        //search_bar.addActionListener(new Program());
+        search_bar.addActionListener(
+            new ActionListener(){
+                public void actionPerformed(ActionEvent e)
+                {
+                    String text = search_bar.getText().toString().toLowerCase();
+                    String approachTextFound = "";
+                    boolean isSearchFound = false;
+                    int foundID = 0;
+                    boolean isApproached = false;
+                    for (int i = 0; i < students.size(); i++) 
+                    {
+                        String fullname = students.get(i).getFullname().toLowerCase();
+                        String mobile = students.get(i).getMobile().toLowerCase();
+
+                        // Complete search
+                        if(text.equals(fullname) || text.equals(mobile)){
+                            isSearchFound = true;
+                            foundID = i;
+                        }
+
+                        // Approch search
+                        for(int j = 0; j < text.length(); j++)
+                        {
+                            if(text.charAt(j) == fullname.charAt(j)){
+                                approachTextFound += text.charAt(j);
+                                isApproached = true;
+                                System.out.println(text.charAt(j));
+                            }
+                            else{
+                                approachTextFound = null;
+                                isApproached = false;
+                                break;
+                            }
+                        }
+
+                        if(isApproached){
+                            break;
+                        }
+                        
+                    }
+                    if(isApproached){
+                        String collectUSers = "";
+                        for (int i = 0; i < students.size(); i++) {
+                            String name = students.get(i).getFullname().toLowerCase();
+                            if(name.contains(text)){
+                                collectUSers += students.get(i) + "\n";
+                            }
+                        }
+                        JOptionPane.showMessageDialog(window, "Student data :\n" + collectUSers, "Search", JOptionPane.PLAIN_MESSAGE);
+                    }
+                    else if(isSearchFound){
+                        JOptionPane.showMessageDialog(window, "Student data :\n" + students.get(foundID), "Search", JOptionPane.PLAIN_MESSAGE);
+                    }else{
+                        JOptionPane.showMessageDialog(window, "Sorry couldn't find the student !", "Search", JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+            }
+        );
         window.add(search_bar);
 
         // Stroing student Informations
@@ -60,6 +119,7 @@ public class Program implements ActionListener
         button3.setBounds(window.getWidth()/2 - (180/2), window.getHeight()/2 + 20, 180, 30);
         button3.setBackground(Color.WHITE);
 
+       
         window.add(button3);
         
         button3.addActionListener(
@@ -76,6 +136,7 @@ public class Program implements ActionListener
                         editBtns.add(new JButton("Edit"));
                         deleteBtns.add(new JButton("Delete"));
                         detailBtns.add(new JButton("Detail"));
+                        courseBtns.add(new JButton("Course"));
                         data += "</p>";
                     }
                     
@@ -206,8 +267,6 @@ public class Program implements ActionListener
                                                 } catch (Exception e2) {
                                                 }
                                             }
-
-
                                             for (int i = 0; i < 1; i++) {
                                                 option = JOptionPane.showInputDialog(newWindow, "Current Department :" + students.get(id).getDepartment() + "\nNew Department :","Edit", JOptionPane.OK_CANCEL_OPTION);
                                                 students.get(id).setDepartment((option != null)  ? option : students.get(id).getDepartment());
