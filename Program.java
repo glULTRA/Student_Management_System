@@ -70,7 +70,7 @@ public class Program implements ActionListener
                         // Approch search
                         for(int j = 0; j < text.length(); j++)
                         {
-                            if(text.charAt(j) == fullname.charAt(j)){
+                            if(text.charAt(j) == fullname.charAt(j) || text.charAt(j) == mobile.charAt(j)){
                                 approachTextFound += text.charAt(j);
                                 isApproached = true;
                                 System.out.println(text.charAt(j));
@@ -91,7 +91,8 @@ public class Program implements ActionListener
                         String collectUSers = "";
                         for (int i = 0; i < students.size(); i++) {
                             String name = students.get(i).getFullname().toLowerCase();
-                            if(name.contains(text)){
+                            String mobile = students.get(i).getMobile().toLowerCase();
+                            if(name.contains(text) || mobile.contains(text)){
                                 collectUSers += students.get(i) + "\n";
                             }
                         }
