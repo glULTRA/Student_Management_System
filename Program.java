@@ -47,7 +47,8 @@ public class Program implements ActionListener
         search_bar.setBounds(window.getWidth() - 400, 10, 290,50);
         search_bar.setAlignmentX(JTextField.CENTER_ALIGNMENT);
         search_bar.setAlignmentY(JTextField.CENTER_ALIGNMENT);
-        search_bar.addActionListener(
+
+        search.addActionListener(
             new ActionListener(){
                 public void actionPerformed(ActionEvent e)
                 {
@@ -124,6 +125,7 @@ public class Program implements ActionListener
                 }
             }
         );
+        
         window.add(search_bar);
 
         // Stroing student Informations
