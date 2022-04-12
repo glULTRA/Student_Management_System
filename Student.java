@@ -90,8 +90,8 @@ public class Student {
                 Student student = new Student();
                 ++j;
                 student.setFullname(splitUpByLines[j++]);
-                student.setMobile(splitUpByLines[j++]);
                 student.setAddress(splitUpByLines[j++]);
+                student.setMobile(splitUpByLines[j++]);
                 student.setDepartment(splitUpByLines[j++]);
                 student.setStage(Integer.parseInt(splitUpByLines[j++]));
                 students.add(student);

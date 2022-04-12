@@ -52,17 +52,17 @@ public class Program implements ActionListener
                 public void actionPerformed(ActionEvent e)
                 {
                     String text = search_bar.getText().toString().toLowerCase();
-                    String approachTextFound = "";
+                    String text_phone = search_bar.getText().toString();
                     boolean isSearchFound = false;
                     int foundID = 0;
                     boolean isApproached = false;
                     for (int i = 0; i < students.size(); i++) 
                     {
                         String fullname = students.get(i).getFullname().toLowerCase();
-                        String mobile = students.get(i).getMobile().toLowerCase();
+                        String mobile = students.get(i).getMobile().toString();
 
                         // Complete search
-                        if(text.equals(fullname) || text.equals(mobile)){
+                        if(text.equals(fullname) || text_phone.equals(mobile)){
                             isSearchFound = true;
                             foundID = i;
                         }
@@ -70,16 +70,19 @@ public class Program implements ActionListener
                         // Approch search
                         for(int j = 0; j < text.length(); j++)
                         {
-                            if(text.charAt(j) == fullname.charAt(j) || text.charAt(j) == mobile.charAt(j)){
-                                approachTextFound += text.charAt(j);
-                                isApproached = true;
-                                System.out.println(text.charAt(j));
-                            }
-                            else{
-                                approachTextFound = null;
+                            try {
+                                if(text.charAt(j) == fullname.charAt(j) || text_phone.charAt(j) == mobile.charAt(j)){
+                                    isApproached = true;
+                                }
+                                else{
+                                    isApproached = false;
+                                    break;
+                                }
+                            } catch (Exception e2) {
                                 isApproached = false;
                                 break;
                             }
+                            
                         }
 
                         if(isApproached){
@@ -89,11 +92,25 @@ public class Program implements ActionListener
                     }
                     if(isApproached){
                         String collectUSers = "";
-                        for (int i = 0; i < students.size(); i++) {
+                        for (int i = 0; i < students.size(); i++) 
+                        {
+                            boolean isFound = false;
                             String name = students.get(i).getFullname().toLowerCase();
-                            String mobile = students.get(i).getMobile().toLowerCase();
-                            if(name.contains(text) || mobile.contains(text)){
-                                collectUSers += students.get(i) + "\n";
+                            String mobile = students.get(i).getMobile();
+                            for (int j = 0; j < text.length(); j++) 
+                            {
+                                if(name.charAt(j) == text.charAt(j) || mobile.charAt(j) == text_phone.charAt(j)){
+                                    isFound = true;
+                                    
+                                }
+                                else{
+                                    isFound = false;
+                                    break;
+                                }
+                            }
+
+                            if(isFound){
+                                collectUSers += students.get(i).toString() + "\n";
                             }
                         }
                         JOptionPane.showMessageDialog(window, "Student data :\n" + collectUSers, "Search", JOptionPane.PLAIN_MESSAGE);
@@ -103,6 +120,7 @@ public class Program implements ActionListener
                     }else{
                         JOptionPane.showMessageDialog(window, "Sorry couldn't find the student !", "Search", JOptionPane.ERROR_MESSAGE);
                     }
+
                 }
             }
         );
