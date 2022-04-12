@@ -72,8 +72,11 @@ public class Student {
 
     public static void pushData(String path, ArrayList<Student> students){
         Importer.clearFile(path);
-        for (Student student : students) {
-            Importer.importData(path, student.toString() + "\n");
+        for (int i = 0; i < students.size(); i++) {
+            if(i != students.size()-1)
+                Importer.importData(path, students.get(i).toString() + "\n");
+            else
+                Importer.importData(path, students.get(i).toString());
         }
     }
 
