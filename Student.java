@@ -33,6 +33,9 @@ public class Student {
         }
         
     }
+    public void idCorrecter(int newID){
+        id = newID;
+    }
     public int getID(){
         return id;
     }

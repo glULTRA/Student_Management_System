@@ -120,15 +120,25 @@ public class Program implements ActionListener
                                 {
                                     public void actionPerformed(ActionEvent e) 
                                     {
-
-                                        
                                         if(JOptionPane.showConfirmDialog(newWindow, "Do u really want to delete item " + (id+1) + " ?", "Deletting!", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION)
                                         {
                                             students.remove(id);
                                             Importer.clearFile("file.txt");
-                                            for (Student student2 : students) {
-                                                Importer.importData("file.txt", student2.toString() + "\n");
+                                            Importer.clearFile("IDs.txt");
+                                            
+                                            Importer.importData("IDs.txt", Integer.toString(students.size()));
+                                                
+
+                                            for (int i = id; i < students.size(); i++) {
+                                                students.get(i).idCorrecter(students.get(i).getID()-1);
                                             }
+
+                                            for (int i = 0; i < students.size(); i++) 
+                                            {
+                                                Importer.importData("file.txt", students.get(i).toString() + "\n");
+                                            }
+                                            
+
                                             editBtns.clear();
                                             deleteBtns.clear();
                                             detailBtns.clear();
@@ -154,12 +164,10 @@ public class Program implements ActionListener
                                     public void actionPerformed(ActionEvent e){
                                         if(JOptionPane.showConfirmDialog(newWindow, "<----------------Student data---------->\n" + students.get(id) + "\nDo u want to edit its data ?", "Edit", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION)
                                         {
-                                            Student editedStudent = new Student();
-                                            
                                             String option;
                                             for (int i = 0; i < 1; i++) {
                                                 option = JOptionPane.showInputDialog(newWindow, "Current Fullname :" + students.get(id).getFullname() + "\nNew Fullname :","Edit", JOptionPane.OK_CANCEL_OPTION);
-                                                editedStudent.setFullname((option != null)  ? option : students.get(id).getFullname());
+                                                students.get(id).setFullname((option != null)  ? option : students.get(id).getFullname());
                                                 try {
                                                     if(option.equals("")){
                                                         --i;
@@ -172,7 +180,7 @@ public class Program implements ActionListener
                                             
                                             for (int i = 0; i < 1; i++) {
                                                 option = JOptionPane.showInputDialog(newWindow, "Current Address :" + students.get(id).getAddress() + "\nNew Address :","Edit", JOptionPane.OK_CANCEL_OPTION);
-                                                editedStudent.setAddress((option != null)  ? option : students.get(id).getAddress());
+                                                students.get(id).setAddress((option != null)  ? option : students.get(id).getAddress());
                                                 try {
                                                     if(option.equals("")){
                                                         --i;
@@ -184,7 +192,7 @@ public class Program implements ActionListener
                                             
                                             for (int i = 0; i < 1; i++) {
                                                 option = JOptionPane.showInputDialog(newWindow, "Current Mobile Number :" + students.get(id).getMobile() + "\nNew Mobile Number :","Edit", JOptionPane.OK_CANCEL_OPTION);
-                                                editedStudent.setMobile((option != null)  ? option : students.get(id).getMobile());
+                                                students.get(id).setMobile((option != null)  ? option : students.get(id).getMobile());
                                                 try {
                                                     if(option.equals("")){
                                                         --i;
@@ -197,7 +205,7 @@ public class Program implements ActionListener
 
                                             for (int i = 0; i < 1; i++) {
                                                 option = JOptionPane.showInputDialog(newWindow, "Current Department :" + students.get(id).getDepartment() + "\nNew Department :","Edit", JOptionPane.OK_CANCEL_OPTION);
-                                                editedStudent.setDepartment((option != null)  ? option : students.get(id).getDepartment());
+                                                students.get(id).setDepartment((option != null)  ? option : students.get(id).getDepartment());
                                                 try {
                                                     if(option.equals("")){
                                                         --i;
@@ -217,7 +225,7 @@ public class Program implements ActionListener
                                                 }
                                                 try {
                                                     opt = Integer.parseInt(optStr);
-                                                    editedStudent.setStage((opt != 0)  ? opt : students.get(id).getStage());
+                                                    students.get(id).setStage((opt != 0)  ? opt : students.get(id).getStage());
                                                 } 
                                                 catch (Exception e2) {
                                                     --i;
@@ -225,7 +233,6 @@ public class Program implements ActionListener
                                                 }
                                             }
 
-                                            students.set(id, editedStudent);
                                             Student.pushData("file.txt", students);
                                             newWindow.dispose();
                                         }
@@ -241,7 +248,7 @@ public class Program implements ActionListener
                         deleteBtns.clear();
                         detailBtns.clear();
                         newWindow.setSize(600,400);
-                        newWindow.setBounds(400,160, newWindow.getWidth(), newWindow.getHeight());
+                        newWindow.setBounds(400,250, newWindow.getWidth(), newWindow.getHeight());
                         newWindow.setVisible(true);
 
                     }else{
