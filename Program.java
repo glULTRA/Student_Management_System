@@ -135,9 +135,14 @@ public class Program implements ActionListener
 
                                             for (int i = 0; i < students.size(); i++) 
                                             {
-                                                Importer.importData("file.txt", students.get(i).toString() + "\n");
+                                                if (Importer.isEmpty("file.txt")) {
+                                                    Importer.importData("file.txt", students.get(i).toString());
+                                                }
+                                                else{
+                                                    Importer.importData("file.txt", "\n" + students.get(i).toString());
+                                                }
+                                                
                                             }
-                                            
 
                                             editBtns.clear();
                                             deleteBtns.clear();
