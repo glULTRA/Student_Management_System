@@ -1,7 +1,5 @@
 import java.awt.Color;
 import javax.swing.*;
-import javax.swing.border.Border;
-import javax.swing.event.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 import java.awt.*;
@@ -136,12 +134,6 @@ public class Program implements ActionListener
         button2.setBackground(Color.white);
         window.add(button2);
 
-        // storing courses
-
-        JButton button5 = new JButton("Register new courses");
-
-
-
         // List all students.
         JButton button3 = new JButton("Show Informations");
         button3.setBounds(window.getWidth()/2 - (180/2), window.getHeight()/2 + 20, 180, 30);
@@ -211,7 +203,7 @@ public class Program implements ActionListener
                             courseBtns.get(j).addActionListener(
                                 new ActionListener(){
                                     public void actionPerformed(ActionEvent e){
-                                        JOptionPane.showMessageDialog(newWindow, "Courses :\n" + students.get(id).getCourses(), "Courses !", JOptionPane.PLAIN_MESSAGE);
+                                        JOptionPane.showMessageDialog(newWindow, "Courses :\n" + students.get(id).getCoursesFormatted(), "Courses !", JOptionPane.PLAIN_MESSAGE);
                                     }
                                 }
                             );
@@ -226,6 +218,7 @@ public class Program implements ActionListener
                                             students.remove(id);
                                             Importer.clearFile("file.txt");
                                             Importer.clearFile("IDs.txt");
+                                            Importer.clearFile("course.txt");
                                             
                                             Importer.importData("IDs.txt", Integer.toString(students.size()));
                                                 
@@ -236,11 +229,14 @@ public class Program implements ActionListener
 
                                             for (int i = 0; i < students.size(); i++) 
                                             {
-                                                if (Importer.isEmpty("file.txt")) {
+                                                if (Importer.isEmpty("file.txt") || Importer.isEmpty("course.txt")) 
+                                                {
                                                     Importer.importData("file.txt", students.get(i).toString());
+                                                    Importer.importData("course.txt", students.get(i).getCourses());
                                                 }
                                                 else{
                                                     Importer.importData("file.txt", "\n" + students.get(i).toString());
+                                                    Importer.importData("course.txt", "\n" + students.get(i).getCourses());
                                                 }
                                                 
                                             }
@@ -248,6 +244,7 @@ public class Program implements ActionListener
                                             editBtns.clear();
                                             deleteBtns.clear();
                                             detailBtns.clear();
+                                            courseBtns.clear();
                                             newWindow.dispose();
                                         }
                                     }
@@ -405,20 +402,50 @@ public class Program implements ActionListener
         student.setAddress(JOptionPane.showInputDialog(window, "Enter Address :"));
         student.setMobile(JOptionPane.showInputDialog(window, "Enter Mobile :"));
         student.setDepartment(JOptionPane.showInputDialog(window, "Enter Department :"));
-        for (int i = 0; i < 1; i++) {
+        while(true){
             try {
                 student.setStage(Integer.parseInt(JOptionPane.showInputDialog(window, "Enter Stage :")));
+                break;
             } catch (Exception e2) {
-                --i;
                 JOptionPane.showMessageDialog(window, "Please enter number !", "Stage Error !", JOptionPane.ERROR_MESSAGE);
             }
         }
+
+        while(true){
+            try {
+                student.setCalculus(Float.parseFloat(JOptionPane.showInputDialog(window, "Enter Calculus II Mark :")));
+                break;
+            } catch (Exception e2) {
+                JOptionPane.showMessageDialog(window, "Please enter number !", "Stage Error !", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+
+        while(true){
+            try {
+                student.setOpp(Float.parseFloat(JOptionPane.showInputDialog(window, "Enter OOP Mark :")));
+                break;
+            } catch (Exception e2) {
+                JOptionPane.showMessageDialog(window, "Please enter number !", "Stage Error !", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+
+        while(true){
+            try {
+                student.setGis(Float.parseFloat(JOptionPane.showInputDialog(window, "Enter GIS Mark :")));
+                break;
+            } catch (Exception e2) {
+                JOptionPane.showMessageDialog(window, "Please enter number !", "Stage Error !", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+
         students.add(student);
-        if (Importer.isEmpty("file.txt")) {
+        if (Importer.isEmpty("file.txt") || Importer.isEmpty("course.txt")) {
             Importer.importData("file.txt", student.toString());
+            Importer.importData("course.txt", student.getCourses());
         }
         else{
             Importer.importData("file.txt", "\n" + student.toString());
+            Importer.importData("course.txt", "\n" + student.getCourses());
         }
     }
 }

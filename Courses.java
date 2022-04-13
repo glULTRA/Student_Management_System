@@ -1,5 +1,3 @@
-import java.util.ArrayList;
-
 abstract class Courses 
 {
     private float[] lectures = new float[3];
@@ -31,6 +29,9 @@ abstract class Courses
         return lectures[2];
     }
     public String getCourses(){
+        return getCalculus() + "," + getOpp() + "," + getGis();
+    }
+    public String getCoursesFormatted(){
         return "Calculus_II :" + getCalculus() + "\nOOP :" + getOpp() + "\nGIS :" + getGis();
     }
 }
