@@ -3,7 +3,8 @@ import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 
-public class Student {
+public class Student extends Courses
+{
     private int id;
     private String fullname;
     private String mobile;
@@ -84,20 +85,34 @@ public class Student {
     {
         try {
             String allData = Importer.reader("file.txt");
+            String courseData = Importer.reader("course.txt");
             String[] splitUpByLines = allData.split("[, \n]");
+            String[] course_split = courseData.split("[, \n]");
+
             int j = 0;
-            for (int i = 0; i < splitUpByLines.length/6; i++) {
+            int t = 0;
+            // Loading all data
+            for (int i = 0; i < splitUpByLines.length/6; i++)
+            {
                 Student student = new Student();
                 ++j;
+                // Set studenet data.
                 student.setFullname(splitUpByLines[j++]);
                 student.setAddress(splitUpByLines[j++]);
                 student.setMobile(splitUpByLines[j++]);
                 student.setDepartment(splitUpByLines[j++]);
                 student.setStage(Integer.parseInt(splitUpByLines[j++]));
+
+                // Set Course data.
+                student.setCalculus(Float.parseFloat(course_split[t++]));
+                student.setOpp(Float.parseFloat(course_split[t++]));
+                student.setGis(Float.parseFloat(course_split[t++]));
+
+                // push all data to array.
                 students.add(student);
             }
         } catch (Exception e) {
-            //TODO: handle exception
+            JOptionPane.showMessageDialog(null, "Cannot loading data because files are empty!", "Loading failed!", JOptionPane.ERROR_MESSAGE);
         }
     }
 

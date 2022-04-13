@@ -11,7 +11,7 @@ public class Program implements ActionListener
     private static final int SCR_WIDTH = 612;
     private static final int  SCR_HEIGHT = 612;
     
-    static JFrame window = new JFrame("Student Management System");
+    static JFrame window;
 
     static ArrayList<Student> students = new ArrayList<Student>();
     static ArrayList<JButton> courseBtns = new ArrayList<JButton>();
@@ -25,6 +25,7 @@ public class Program implements ActionListener
         Student.loadData(students);
         
         // Creating window
+        window = new JFrame("Student Management System");
         window.setLayout(null);
         window.setSize(SCR_WIDTH,SCR_HEIGHT);
         window.setBounds(400,160, window.getWidth(), window.getHeight());
@@ -135,6 +136,12 @@ public class Program implements ActionListener
         button2.setBackground(Color.white);
         window.add(button2);
 
+        // storing courses
+
+        JButton button5 = new JButton("Register new courses");
+
+
+
         // List all students.
         JButton button3 = new JButton("Show Informations");
         button3.setBounds(window.getWidth()/2 - (180/2), window.getHeight()/2 + 20, 180, 30);
@@ -169,33 +176,45 @@ public class Program implements ActionListener
                         JLabel text = new JLabel("Student Lists");
                         text.setText(data);
                         JPanel btnList = new JPanel();
+                        JPanel courseBtn = new JPanel();
+                        courseBtn.setLayout(new BoxLayout(courseBtn, BoxLayout.Y_AXIS));
                         GridBagConstraints cg = new GridBagConstraints();                        
                         btnList.setLayout(new GridBagLayout());
 
+                        
                         
                         for (int i = 0; i < editBtns.size(); i++)
                         {
                             cg.gridy++;
                             if(i == 0) {
-                                btnList.add(new JLabel("<html><p style=\"background-color:#5bc0de;\">Edits</p><hr></html>"),cg);
-                                btnList.add(new JLabel("<html><p style=\"background-color:#5bc0de;\">Deletes</p><hr></html>"),cg);
-                                btnList.add(new JLabel("<html><p style=\"background-color:#5bc0de;\">Details</p><hr></html>"),cg);
+                                btnList.add(new JLabel("<html><p style=\"background-color:#5bc0de;\">Edits</p><hr><br></html>"),cg);
+                                btnList.add(new JLabel("<html><p style=\"background-color:#5bc0de;\">Deletes</p><hr><br></html>"),cg);
+                                btnList.add(new JLabel("<html><p style=\"background-color:#5bc0de;\">Details</p><hr><br></html>"),cg);
+                                courseBtn.add(new JLabel("<html><p style=\"background-color:#5bc0de;\">Courses</p><hr><br></html>"));
                                 cg.gridy++;
                             };
                             editBtns.get(i).setBackground(new Color(92, 184, 92));
                             deleteBtns.get(i).setBackground(new Color(217, 83, 79));
                             detailBtns.get(i).setBackground(new Color(91, 192, 222));
-
+                            courseBtns.get(i).setBackground(new Color(147,112,219));
                             
-
                             btnList.add(editBtns.get(i),cg);
                             btnList.add(deleteBtns.get(i),cg);
                             btnList.add(detailBtns.get(i),cg);
+                            courseBtn.add(courseBtns.get(i));
                         }
 
                         for(int j = 0; j < deleteBtns.size(); j++)
                         {
                             int id = j;
+
+                            courseBtns.get(j).addActionListener(
+                                new ActionListener(){
+                                    public void actionPerformed(ActionEvent e){
+                                        JOptionPane.showMessageDialog(newWindow, "Courses :\n" + students.get(id).getCourses(), "Courses !", JOptionPane.PLAIN_MESSAGE);
+                                    }
+                                }
+                            );
                             deleteBtns.get(j).addActionListener
                             (
                                 new ActionListener()
@@ -326,9 +345,12 @@ public class Program implements ActionListener
                             );
                         }
 
+                        newWindow.add(courseBtn);
+                        
                         newWindow.add(text, BorderLayout.CENTER);
                         newWindow.setLayout(new GridBagLayout());
                         newWindow.add(btnList);
+                        
                         editBtns.clear();
                         deleteBtns.clear();
                         detailBtns.clear();
@@ -342,8 +364,6 @@ public class Program implements ActionListener
                 }
             }
         );
-
-        
 
         // List students in each department.
         JButton button4 = new JButton("List students in each department");
