@@ -152,7 +152,7 @@ public class Program implements ActionListener
                     for (Student student: students) 
                     {
                         data += "<p style=\"background-color:#f0ad4e;\" >";
-                        data += student.htmlFormatted() + "<hr>";
+                        data += student.getData() + "<hr>";
                         editBtns.add(new JButton("Edit"));
                         deleteBtns.add(new JButton("Delete"));
                         detailBtns.add(new JButton("Detail"));
@@ -200,10 +200,10 @@ public class Program implements ActionListener
                         {
                             int id = j;
 
-                            courseBtns.get(j).addActionListener(
+                            courseBtns.get(id).addActionListener(
                                 new ActionListener(){
                                     public void actionPerformed(ActionEvent e){
-                                        JOptionPane.showMessageDialog(newWindow, "Courses :\n" + students.get(id).getCoursesFormatted(), "Courses !", JOptionPane.PLAIN_MESSAGE);
+                                        JOptionPane.showMessageDialog(newWindow, "<html><h1>Courses</ht>" + students.get(id).getCoursesHtmlFormatted() + "</html>", "Courses", JOptionPane.PLAIN_MESSAGE);
                                     }
                                 }
                             );
@@ -256,10 +256,17 @@ public class Program implements ActionListener
                                 {
                                     public void actionPerformed(ActionEvent e) 
                                     {
-                                        JOptionPane.showMessageDialog(newWindow,students.get(id));
+                                        String data = "<html>";
+                                        data += "<h1 align=\"center\"> Student Data </h1>";
+                                        data += "<table style=\"border:1px solid black;\">";
+                                        data += Student.title;
+                                        data += Student.course_title;
+                                        data += students.get(id).htmlFormatted();
+                                        data += students.get(id).getCoursesHtmlFormatted();
+                                        data += "</html>";
+                                        JOptionPane.showMessageDialog(newWindow, data);
                                     }
                                 }
-                                
                             );
 
                             editBtns.get(j).addActionListener(
@@ -334,6 +341,60 @@ public class Program implements ActionListener
                                                 }
                                             }
 
+                                            for (int i = 0;i < 1; i++)
+                                            {
+                                                float opt;
+                                                String optStr;
+                                                optStr = JOptionPane.showInputDialog(newWindow, "Current Calculus Mark :" + students.get(id).getCalculus() + "\nNew Calculus MArk :", "Edit", JOptionPane.OK_CANCEL_OPTION);
+                                                if(optStr == null){
+                                                    break;
+                                                }
+                                                try {
+                                                    opt = Float.parseFloat(optStr);
+                                                    students.get(id).setCalculus((opt != 0)  ? opt : students.get(id).getCalculus());
+                                                } 
+                                                catch (Exception e2) {
+                                                    --i;
+                                                    JOptionPane.showMessageDialog(newWindow, "Please enter number only!", "Error", JOptionPane.ERROR_MESSAGE);
+                                                }
+                                            }
+
+                                            for (int i = 0;i < 1; i++)
+                                            {
+                                                float opt;
+                                                String optStr;
+                                                optStr = JOptionPane.showInputDialog(newWindow, "Current OOP Mark :" + students.get(id).getOop() + "\nNew OOp Mark :", "Edit", JOptionPane.OK_CANCEL_OPTION);
+                                                if(optStr == null){
+                                                    break;
+                                                }
+                                                try {
+                                                    opt = Float.parseFloat(optStr);
+                                                    students.get(id).setOop((opt != 0)  ? opt : students.get(id).getCalculus());
+                                                } 
+                                                catch (Exception e2) {
+                                                    --i;
+                                                    JOptionPane.showMessageDialog(newWindow, "Please enter number only!", "Error", JOptionPane.ERROR_MESSAGE);
+                                                }
+                                            }
+
+                                            for (int i = 0;i < 1; i++)
+                                            {
+                                                float opt;
+                                                String optStr;
+                                                optStr = JOptionPane.showInputDialog(newWindow, "Current Gis Mark :" + students.get(id).getOop() + "\nNew Gis Mark :", "Edit", JOptionPane.OK_CANCEL_OPTION);
+                                                if(optStr == null){
+                                                    break;
+                                                }
+                                                try {
+                                                    opt = Float.parseFloat(optStr);
+                                                    students.get(id).setGis((opt != 0)  ? opt : students.get(id).getGis());
+                                                } 
+                                                catch (Exception e2) {
+                                                    --i;
+                                                    JOptionPane.showMessageDialog(newWindow, "Please enter number only!", "Error", JOptionPane.ERROR_MESSAGE);
+                                                }
+                                            }
+
                                             Student.pushData("file.txt", students);
                                             newWindow.dispose();
                                         }
@@ -342,7 +403,7 @@ public class Program implements ActionListener
                             );
                         }
 
-                        newWindow.add(courseBtn);
+                        //newWindow.add(courseBtn);
                         
                         newWindow.add(text, BorderLayout.CENTER);
                         newWindow.setLayout(new GridBagLayout());
@@ -351,6 +412,7 @@ public class Program implements ActionListener
                         editBtns.clear();
                         deleteBtns.clear();
                         detailBtns.clear();
+                        courseBtns.clear();
                         newWindow.setSize(600,400);
                         newWindow.setBounds(400,250, newWindow.getWidth(), newWindow.getHeight());
                         newWindow.setVisible(true);
@@ -373,12 +435,20 @@ public class Program implements ActionListener
             new ActionListener()
             {
                 public void actionPerformed(ActionEvent e) {
-                    String data = "";
+                    String data = "<html>";
+                    data += "<table style=\"border:1px solid black;\">";
+                    data += Student.title + Student.course_title;
                     for (Student student: students) {
-                        data += student.toString() + "\n";
+                        data += student.htmlFormatted();
+                        data += student.getCoursesHtmlFormatted();
                     }
+
+                    data += "</table>";
+                    data += "</html>";
                     if(!data.equals(""))
-                        JOptionPane.showMessageDialog(window, data, "List of student", JOptionPane.PLAIN_MESSAGE);
+                    {
+                        JOptionPane.showMessageDialog(window, data, "List of students", JOptionPane.PLAIN_MESSAGE);       
+                    }
                     else
                         JOptionPane.showMessageDialog(window, "List is empty!", "No Lists", JOptionPane.WARNING_MESSAGE);
                 }
@@ -422,7 +492,7 @@ public class Program implements ActionListener
 
         while(true){
             try {
-                student.setOpp(Float.parseFloat(JOptionPane.showInputDialog(window, "Enter OOP Mark :")));
+                student.setOop(Float.parseFloat(JOptionPane.showInputDialog(window, "Enter OOP Mark :")));
                 break;
             } catch (Exception e2) {
                 JOptionPane.showMessageDialog(window, "Please enter number !", "Stage Error !", JOptionPane.ERROR_MESSAGE);

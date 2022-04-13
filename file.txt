@@ -1,4 +1,2 @@
 1,Dihan,Erbil,7504151617,ISE,2
-2,Daren,Erbil,7504545858,ISE,3
-3,Mohammed,Erbil,7517303465,ISE,2
-4,Ahmed,,7504202627,ISE,2
+2,Dahen,Suli,7704171717,Civil,3

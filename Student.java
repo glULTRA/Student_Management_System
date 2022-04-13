@@ -10,6 +10,26 @@ public class Student extends Courses
     private String address;
     private String department;
     private int stage;
+    public static String title = 
+        "<tr>"+
+            "<th>" +
+                "ID"+
+            "</th>"+
+            "<th>"+
+                "Fullname"+
+            "</th>"+
+            "<th>"+
+                "Address"+
+            "</th>"+
+            "<th>"+
+                "Mobile"+
+            "</th>"+
+            "<th>"+
+                "Department"+
+            "</th>"+
+            "<th>"+
+                "Stage"+
+            "</th>";
     
     public Student(){
         autoIdProvider();
@@ -72,11 +92,17 @@ public class Student extends Courses
 
     public static void pushData(String path, ArrayList<Student> students){
         Importer.clearFile(path);
+        Importer.clearFile("course.txt");
         for (int i = 0; i < students.size(); i++) {
-            if(i != students.size()-1)
+            if(i != students.size()-1){
                 Importer.importData(path, students.get(i).toString() + "\n");
-            else
+                Importer.importData("course.txt", students.get(i).getCourses() + "\n");
+            }
+            else{
                 Importer.importData(path, students.get(i).toString());
+                Importer.importData("course.txt", students.get(i).getCourses());
+
+            }
         }
     }
 
@@ -104,7 +130,7 @@ public class Student extends Courses
 
                 // Set Course data.
                 student.setCalculus(Float.parseFloat(course_split[t++]));
-                student.setOpp(Float.parseFloat(course_split[t++]));
+                student.setOop(Float.parseFloat(course_split[t++]));
                 student.setGis(Float.parseFloat(course_split[t++]));
 
                 // push all data to array.
@@ -119,7 +145,29 @@ public class Student extends Courses
     public String toString(){
         return getID() + "," + getFullname() + "," + getAddress() + "," + getMobile() +"," +getDepartment() + "," + getStage();
     }
+    public String getData(){
+        return getID() + "\t" + getFullname() + "\t" + getAddress() + "\t" + getMobile() +"\t" +getDepartment() + "\t" + getStage();
+    }
     public String htmlFormatted(){
-        return getID() + "&nbsp;" + getFullname() + "&nbsp;" + getAddress() + "&nbsp;" + getMobile() +"&nbsp;" +getDepartment() + "&nbsp;" + getStage();
+        return
+            "<tr>"+
+                "<td>"+
+                    getID()+
+                "</td>"+
+                "<td>"+
+                    getFullname()+
+                "</td>"+
+                "<td>"+
+                    getAddress()+
+                "</td>"+
+                "<td>"+
+                    getMobile()+
+                "</td>"+
+                "<td>"+
+                    getDepartment()+
+                "</td>"+
+                "<td>"+
+                    getStage()+
+                "</td>";
     }
 }
