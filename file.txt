@@ -1,2 +1,2 @@
-1,Dihan,Erbil,7504151617,ISE,2
-2,Dahen,Suli,7704171717,Civil,3
+1,Mohammed,Erbil,7504151617,Civil,2
+2,Mustafa,Suli,7517301517,Power,3

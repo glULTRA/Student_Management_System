@@ -11,7 +11,7 @@ public class Program implements ActionListener
     
     static JFrame window;
 
-    static ArrayList<Student> students = new ArrayList<Student>();
+    static ArrayList<Student> students   = new ArrayList<Student>();
     static ArrayList<JButton> courseBtns = new ArrayList<JButton>();
     static ArrayList<JButton> editBtns   = new ArrayList<JButton>();
     static ArrayList<JButton> deleteBtns = new ArrayList<JButton>();
